@@ -1,0 +1,45 @@
+Assignment 8
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Performance {
+public:
+    string time;
+    int totalSeats;
+    int bookedSeats;
+
+    Performance(const string& t, int seats) : time(t), totalSeats(seats), bookedSeats(0) {}
+
+    void bookSeat() {
+        if (bookedSeats < totalSeats) {
+            bookedSeats++;
+            cout << "Booking confirmed for performance at " << time << "." << endl;
+        } else {
+            cout << "The performance at " << time << " is fully booked." << endl;
+        }
+    }
+
+    void showRemainingSeats() const {
+        cout << "Performance at " << time << " has "
+             << (totalSeats - bookedSeats) << " remaining seats." << endl;
+    }
+};
+
+int main() {
+    
+    Performance early_afternoon("1:00 PM", 100);
+    Performance early_evening("5:00 PM", 100);
+    Performance main_show("8:30 PM", 100);
+
+    early_afternoon.bookSeat();
+    early_evening.bookSeat();
+    main_show.bookSeat();
+
+    early_afternoon.showRemainingSeats();
+    early_evening.showRemainingSeats();
+    main_show.showRemainingSeats();
+
+    return 0;
+}
