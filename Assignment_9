@@ -1,0 +1,86 @@
+#include <iostream>
+using namespace std;
+
+class Book {
+public:
+    int classMark;
+    int status;  
+
+    Book(int mark) {
+        classMark = mark;
+        status = 0;
+    }
+
+    void loan() {
+        if (status == 0) {
+            status = 1;
+            cout << "Book " << classMark << " checked out." << endl;
+        } else {
+            cout << "Book " << classMark << " cannot be checked out." << endl;
+        }
+    }
+
+    void reserve() {
+        if (status == 1) {
+            status = 2;
+            cout << "Book " << classMark << " reserved." << endl;
+        } else {
+            cout << "Book " << classMark << " can't be reserved." << endl;
+        }
+    }
+
+    void missing() {
+        status = 3;
+        cout << "Book " << classMark << " marked as missing." << endl;
+    }
+
+    void returned() {
+        status = 0;
+        cout << "Book " << classMark << " returned to library." << endl;
+    }
+
+    void showStatus() {
+        cout << "Book " << classMark << " status: ";
+        if (status == 0)
+            cout << "On Shelf";
+        else if (status == 1)
+            cout << "On Loan";
+        else if (status == 2)
+            cout << "Reserved";
+        else if (status == 3)
+            cout << "Missing";
+        cout << endl;
+    }
+};
+
+int main() {
+    Book b1(1), b2(2), b3(3);
+
+    b1.loan();
+    b1.reserve();
+    b2.loan();
+    b3.missing();
+
+    int onShelf = 0, onLoan = 0, reserved = 0, missing = 0;
+
+    b1.showStatus();
+    b2.showStatus();
+    b3.showStatus();
+
+    Book books[] = {b1, b2, b3};
+    for (int i = 0; i < 3; i++) {
+        if (books[i].status == 0) onShelf++;
+        else if (books[i].status == 1) onLoan++;
+        else if (books[i].status == 2) reserved++;
+        else if (books[i].status == 3) missing++;
+    }
+
+    cout << "\nLibrary Summary:" << endl;
+    cout << "Books in library: 5" << endl;
+    cout << "Books on loan: " << onLoan << endl;
+    cout << "Books reserved: " << reserved << endl;
+    cout << "Books on shelves: " << onShelf << endl;
+    cout << "Books missing: " << missing << endl;
+
+    return 0;
+}
