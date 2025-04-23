@@ -1,0 +1,97 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+class Books {
+    char* title;
+    char* author;
+    char* publisher;
+    float price;
+    int stock;
+
+public:
+    // Constructor using new operator
+    Books(const char* t, const char* a, const char* p, float pr, int s) {
+        title = new char[strlen(t) + 1];
+        strcpy(title, t);
+
+        author = new char[strlen(a) + 1];
+        strcpy(author, a);
+
+        publisher = new char[strlen(p) + 1];
+        strcpy(publisher, p);
+
+        price = pr;
+        stock = s;
+    }
+
+    // Destructor to free memory
+    ~Books() {
+        delete[] title;
+        delete[] author;
+        delete[] publisher;
+    }
+
+    // Search for a book by title and author
+    bool search(const char* t, const char* a) const {
+        return (strcmp(title, t) == 0 && strcmp(author, a) == 0);
+    }
+
+    // Display book details
+    void display() const {
+        cout << "\nBook found!\n";
+        cout << "Title: " << title << "\nAuthor: " << author
+             << "\nPublisher: " << publisher << "\nPrice: $" << price
+             << "\nStock: " << stock << " copies\n";
+    }
+
+    // Process a sale
+    void sell(int quantity) {
+        if (quantity <= stock) {
+            float total = quantity * price;
+            stock -= quantity;
+            cout << "Total cost: $" << total << "\n";
+        } else {
+            cout << "Required copies not in stock.\n";
+        }
+    }
+};
+
+int main() {
+    const int SIZE = 3;
+    Books* inventory[SIZE] = {
+        new Books("C++ Primer", "Lippman", "Pearson", 500.0, 10),
+        new Books("Effective C++", "Scott Meyers", "O'Reilly", 450.0, 5),
+        new Books("Clean Code", "Robert Martin", "Prentice Hall", 600.0, 7)
+    };
+
+    char title[100], author[100];
+    cout << "Enter title of the book: ";
+    cin.getline(title, 100);
+    cout << "Enter author of the book: ";
+    cin.getline(author, 100);
+
+    bool found = false;
+    for (int i = 0; i < SIZE; ++i) {
+        if (inventory[i]->search(title, author)) {
+            inventory[i]->display();
+            cout << "Enter number of copies required: ";
+            int copies;
+            cin >> copies;
+            inventory[i]->sell(copies);
+            found = true;
+            break;
+        }
+    }
+
+    if (!found) {
+        cout << "\nBook not available in inventory.\n";
+    }
+
+    // Free allocated memory
+    for (int i = 0; i < SIZE; ++i) {
+        delete inventory[i];
+    }
+
+    return 0;
+}
